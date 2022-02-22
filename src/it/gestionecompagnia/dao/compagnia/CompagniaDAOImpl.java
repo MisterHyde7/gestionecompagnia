@@ -46,7 +46,33 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 
 	@Override
 	public Compagnia get(Long idInput) throws Exception {
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (idInput == null || idInput < 1)
+			throw new Exception("Valore di input non ammesso.");
+
+		Compagnia result = null;
+		try (PreparedStatement ps = connection.prepareStatement("select * from compagnia where id=?")) {
+
+			ps.setLong(1, idInput);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					result = new Compagnia();
+					result.setId(rs.getInt("id"));
+					result.setRagioneSociale(rs.getString("ragioneSociale"));
+					result.setFatturatoAnnuo(rs.getLong("fatturatoAnnuo"));
+					result.setDataFondazone(rs.getDate("dataFondazione"));
+				} else {
+					result = null;
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package it.gestionecompagnia.test;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.util.List;
 
 import it.gestionecompagnia.connection.MyConnection;
 import it.gestionecompagnia.dao.Constants;
@@ -28,6 +29,8 @@ public class TestGestioneCompagnia {
 
 			testListCompagnia(compagniaDAOInstance);
 
+			testGetById(compagniaDAOInstance);
+
 		}
 
 	}
@@ -50,9 +53,23 @@ public class TestGestioneCompagnia {
 		if (conteggioInserimenti < 1) {
 			throw new RuntimeException("Inserimento non avvenuto");
 		}
+		List<Compagnia> elencoVociPresenti = compagniaDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+
 		System.out.println("Nella lista ci sono " + compagniaDAOInstance.list().size() + " compagnie");
 		System.out.println("========== test eseguito con successo ==========");
 
 	}
 
+	private static void testGetById(CompagniaDAO compagniaDAOInstance) throws Exception {
+		System.out.println("========== Avvio test get di compagnia ==========");
+		List<Compagnia> elencoVociPresenti = compagniaDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+		if (compagniaDAOInstance.get(1L) == null) {
+			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
 }
