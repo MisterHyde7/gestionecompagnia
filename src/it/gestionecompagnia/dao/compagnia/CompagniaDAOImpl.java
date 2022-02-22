@@ -1,6 +1,11 @@
 package it.gestionecompagnia.dao.compagnia;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import it.gestionecompagnia.dao.AbstractMySQLDAO;
@@ -9,9 +14,34 @@ import it.gestionecompagnia.model.Impiegato;
 
 public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 
+	public CompagniaDAOImpl(Connection connection) {
+		super(connection);
+	}
+
 	@Override
 	public List<Compagnia> list() throws Exception {
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		ArrayList<Compagnia> result = new ArrayList<Compagnia>();
+		Compagnia compagniaTemp = null;
+
+		try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery("select * from compagnia")) {
+
+			while (rs.next()) {
+				compagniaTemp = new Compagnia();
+				compagniaTemp.setId(rs.getInt("id"));
+				compagniaTemp.setRagioneSociale(rs.getString("ragioneSociale"));
+				compagniaTemp.setFatturatoAnnuo(rs.getLong("fatturatoAnnuo"));
+				compagniaTemp.setDataFondazone(rs.getDate("dataFondazione"));
+				result.add(compagniaTemp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
@@ -26,7 +56,24 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 
 	@Override
 	public int insert(Compagnia input) throws Exception {
-		return 0;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (input == null)
+			throw new Exception("Valore di input non ammesso.");
+
+		int result = 0;
+		try (PreparedStatement ps = connection.prepareStatement(
+				"INSERT INTO compagnia (ragioneSociale, fatturatoAnnuo, dataFondazione) VALUES (?, ?, ?);")) {
+			ps.setString(1, input.getRagioneSociale());
+			ps.setLong(2, input.getFatturatoAnnuo());
+			ps.setDate(3, new java.sql.Date(input.getDataFondazone().getTime()));
+			result = ps.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
