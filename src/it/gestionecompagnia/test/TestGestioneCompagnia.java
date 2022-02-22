@@ -20,11 +20,13 @@ public class TestGestioneCompagnia {
 		ImpiegatoDAO impiegatoDAOInstance = null;
 
 		try (Connection connection = MyConnection.getConnection(Constants.DRIVER_NAME, Constants.CONNECTION_URL)) {
-			
+
 			compagniaDAOInstance = new CompagniaDAOImpl(connection);
 			impiegatoDAOInstance = new ImpiegatoDAOImpl(connection);
 
 			testInsertCompagnia(compagniaDAOInstance);
+
+			testListCompagnia(compagniaDAOInstance);
 
 		}
 
@@ -38,6 +40,19 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("Inserimento non avvenuto");
 		}
 		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testListCompagnia(CompagniaDAO compagniaDAOInstance) throws Exception {
+
+		System.out.println("========== Avvio test list di compagnia ==========");
+
+		int conteggioInserimenti = compagniaDAOInstance.insert(new Compagnia("provami", 100L, new Date(2022, 01, 01)));
+		if (conteggioInserimenti < 1) {
+			throw new RuntimeException("Inserimento non avvenuto");
+		}
+		System.out.println("Nella lista ci sono " + compagniaDAOInstance.list().size() + " compagnie");
+		System.out.println("========== test eseguito con successo ==========");
+
 	}
 
 }
