@@ -31,6 +31,10 @@ public class TestGestioneCompagnia {
 
 			testGetById(compagniaDAOInstance);
 
+			Compagnia compagniaPerTestUpdate = new Compagnia("com", 500L, new Date(2022, 01, 01));
+			compagniaPerTestUpdate.setId(1);
+			testUpdateCompagnia(compagniaDAOInstance, compagniaPerTestUpdate);
+
 		}
 
 	}
@@ -69,6 +73,17 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
 		if (compagniaDAOInstance.get(1L) == null) {
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testUpdateCompagnia(CompagniaDAO compagniaDAO, Compagnia compagniaInput) throws Exception {
+		System.out.println("========== Avvio test update di compagnia ==========");
+		List<Compagnia> elencoVociPresenti = compagniaDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testUpdate : FAILED, non ci sono voci sul DB");
+		if (compagniaDAO.update(compagniaInput) < 1) {
+			throw new RuntimeException("testUpdate : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
