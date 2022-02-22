@@ -51,6 +51,8 @@ public class TestGestioneCompagnia {
 
 			testInsertImpiegato(impiegatoDAOInstance);
 
+			testDeleteImpiegato(impiegatoDAOInstance);
+
 		}
 
 	}
@@ -176,6 +178,22 @@ public class TestGestioneCompagnia {
 				new java.util.Date(1900, 01, 01), new java.util.Date(2000, 01, 01)));
 		if (conteggioInserimenti < 1) {
 			throw new RuntimeException("Inserimento non avvenuto");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testDeleteImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
+		System.out.println("========== Avvio test Delete di compagnia ==========");
+		int conteggioInserimenti = impiegatoDAO.insert(new Impiegato("cosa", "cosa", "h501x",
+				new java.util.Date(1900, 01, 01), new java.util.Date(2000, 01, 01)));
+		if (conteggioInserimenti < 1) {
+			throw new RuntimeException("Inserimento non avvenuto");
+		}
+		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testDelete : FAILED, non ci sono voci sul DB");
+		if (impiegatoDAO.delete(elencoVociPresenti.get(elencoVociPresenti.size() - 1)) < 1) {
+			throw new RuntimeException("testDelete : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
