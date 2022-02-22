@@ -43,6 +43,10 @@ public class TestGestioneCompagnia {
 			testListImpiegato(impiegatoDAOInstance);
 			
 			testFindByIdImpiegato(impiegatoDAOInstance);
+			
+			Impiegato impiegatoPerTestUpdate = new Impiegato("luca", "martucci", "mrtlcu99c05h501x", new java.util.Date(1999, 03, 05), new java.util.Date(2022, 03, 05));
+			impiegatoPerTestUpdate.setId(1);
+			testUpdateImpiegato(impiegatoDAOInstance, impiegatoPerTestUpdate);
 
 		}
 
@@ -147,6 +151,17 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
 		if (impiegatoDAO.get(1L) == null) {
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+	
+	private static void testUpdateImpiegato(ImpiegatoDAO impiegatoDAO, Impiegato impiegatoInput) throws Exception {
+		System.out.println("========== Avvio test update di impiegato ==========");
+		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testUpdate : FAILED, non ci sono voci sul DB");
+		if (impiegatoDAO.update(impiegatoInput) < 1) {
+			throw new RuntimeException("testUpdate : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
