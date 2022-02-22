@@ -39,14 +39,17 @@ public class TestGestioneCompagnia {
 			testDeleteCompagnia(compagniaDAOInstance);
 
 			testFindByExampleCompagnia(compagniaDAOInstance);
-			
+
 			testListImpiegato(impiegatoDAOInstance);
-			
+
 			testFindByIdImpiegato(impiegatoDAOInstance);
-			
-			Impiegato impiegatoPerTestUpdate = new Impiegato("luca", "martucci", "mrtlcu99c05h501x", new java.util.Date(1999, 03, 05), new java.util.Date(2022, 03, 05));
+
+			Impiegato impiegatoPerTestUpdate = new Impiegato("luca", "martucci", "mrtlcu99c05h501x",
+					new java.util.Date(1999, 03, 05), new java.util.Date(2022, 03, 05));
 			impiegatoPerTestUpdate.setId(1);
 			testUpdateImpiegato(impiegatoDAOInstance, impiegatoPerTestUpdate);
+
+			testInsertImpiegato(impiegatoDAOInstance);
 
 		}
 
@@ -132,10 +135,10 @@ public class TestGestioneCompagnia {
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
-	
+
 	private static void testListImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
 		System.out.println("========== Avvio list di impiegato ==========");
-		
+
 		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
 		if (elencoVociPresenti.size() < 1)
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
@@ -143,7 +146,7 @@ public class TestGestioneCompagnia {
 		System.out.println("Nella lista ci sono " + impiegatoDAO.list().size() + " compagnie");
 		System.out.println("========== test eseguito con successo ==========");
 	}
-	
+
 	private static void testFindByIdImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
 		System.out.println("========== Avvio test get di impiegato ==========");
 		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
@@ -154,7 +157,7 @@ public class TestGestioneCompagnia {
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
-	
+
 	private static void testUpdateImpiegato(ImpiegatoDAO impiegatoDAO, Impiegato impiegatoInput) throws Exception {
 		System.out.println("========== Avvio test update di impiegato ==========");
 		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
@@ -162,6 +165,17 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("testUpdate : FAILED, non ci sono voci sul DB");
 		if (impiegatoDAO.update(impiegatoInput) < 1) {
 			throw new RuntimeException("testUpdate : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testInsertImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
+		System.out.println("========== Inizio test inserimento impiegato ==========");
+
+		int conteggioInserimenti = impiegatoDAO.insert(new Impiegato("prova", "prova", "h501x",
+				new java.util.Date(1900, 01, 01), new java.util.Date(2000, 01, 01)));
+		if (conteggioInserimenti < 1) {
+			throw new RuntimeException("Inserimento non avvenuto");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
