@@ -11,6 +11,7 @@ import it.gestionecompagnia.dao.compagnia.CompagniaDAOImpl;
 import it.gestionecompagnia.dao.impiegato.ImpiegatoDAO;
 import it.gestionecompagnia.dao.impiegato.ImpiegatoDAOImpl;
 import it.gestionecompagnia.model.Compagnia;
+import it.gestionecompagnia.model.Impiegato;
 
 public class TestGestioneCompagnia {
 
@@ -38,6 +39,8 @@ public class TestGestioneCompagnia {
 			testDeleteCompagnia(compagniaDAOInstance);
 
 			testFindByExampleCompagnia(compagniaDAOInstance);
+			
+			testListImpiegato(impiegatoDAOInstance);
 
 		}
 
@@ -121,6 +124,17 @@ public class TestGestioneCompagnia {
 		if (compagniaDAO.findByExample(compagniaPerTest) == null) {
 			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
 		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+	
+	private static void testListImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
+		System.out.println("========== Avvio list di impiegato ==========");
+		
+		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+
+		System.out.println("Nella lista ci sono " + impiegatoDAO.list().size() + " compagnie");
 		System.out.println("========== test eseguito con successo ==========");
 	}
 }
