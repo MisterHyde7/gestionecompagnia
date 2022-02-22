@@ -41,6 +41,8 @@ public class TestGestioneCompagnia {
 			testFindByExampleCompagnia(compagniaDAOInstance);
 			
 			testListImpiegato(impiegatoDAOInstance);
+			
+			testFindByIdImpiegato(impiegatoDAOInstance);
 
 		}
 
@@ -135,6 +137,17 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
 
 		System.out.println("Nella lista ci sono " + impiegatoDAO.list().size() + " compagnie");
+		System.out.println("========== test eseguito con successo ==========");
+	}
+	
+	private static void testFindByIdImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
+		System.out.println("========== Avvio test get di impiegato ==========");
+		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+		if (impiegatoDAO.get(1L) == null) {
+			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
+		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
 }

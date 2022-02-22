@@ -2,6 +2,7 @@ package it.gestionecompagnia.dao.impiegato;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -46,8 +47,35 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 
 	@Override
 	public Impiegato get(Long idInput) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (idInput == null || idInput < 1)
+			throw new Exception("Valore di input non ammesso.");
+
+		Impiegato result = null;
+		try (PreparedStatement ps = connection.prepareStatement("select * from impiegato where id=?")) {
+
+			ps.setLong(1, idInput);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					result = new Impiegato();
+					result.setId(rs.getInt("id"));
+					result.setNome(rs.getString("nome"));
+					result.setCognome(rs.getString("cognome"));
+					result.setCodiceFiscale(rs.getString("codiceFiscale"));
+					result.setDataDiNascita(rs.getDate("dataNascita"));
+					result.setDataAssunzione(rs.getDate("dataAssunzione"));
+				} else {
+					result = null;
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
