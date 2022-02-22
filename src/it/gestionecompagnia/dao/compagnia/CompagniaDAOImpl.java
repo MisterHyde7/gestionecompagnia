@@ -141,8 +141,43 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 
 	@Override
 	public List<Compagnia> findByExample(Compagnia input) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		if (input == null)
+			throw new Exception("Valore di input non ammesso.");
+
+		ArrayList<Compagnia> result = new ArrayList<Compagnia>();
+		Compagnia compagniaTemp = null;
+
+		String query = "select * from compagnia where 1=1 ";
+		if (input.getRagioneSociale() != null && !input.getRagioneSociale().isEmpty()) {
+			query += " and ragioneSociale like '" + input.getRagioneSociale() + "%' ";
+		}
+		
+		if (input.getFatturatoAnnuo() != null) {
+			query += " and fatturatoAnnuo = " + input.getFatturatoAnnuo();
+		}
+
+		if (input.getDataFondazone() != null) {
+			query += " and dataFondazione = '" + input.getDataFondazone() + "' ";
+		}
+
+		try (Statement ps = connection.createStatement()) {
+			ResultSet rs = ps.executeQuery(query);
+
+			while (rs.next()) {
+				compagniaTemp = new Compagnia();
+				compagniaTemp.setRagioneSociale(rs.getString("ragioneSociale"));
+				compagniaTemp.setFatturatoAnnuo(rs.getLong("fatturatoAnnuo"));
+				compagniaTemp.setDataFondazone(rs.getDate("dataFondazione"));
+				result.add(compagniaTemp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override

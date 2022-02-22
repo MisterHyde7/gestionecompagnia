@@ -35,6 +35,10 @@ public class TestGestioneCompagnia {
 			compagniaPerTestUpdate.setId(1);
 			testUpdateCompagnia(compagniaDAOInstance, compagniaPerTestUpdate);
 
+			testDeleteCompagnia(compagniaDAOInstance);
+
+			testFindByExampleCompagnia(compagniaDAOInstance);
+
 		}
 
 	}
@@ -99,6 +103,23 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("testDelete : FAILED, non ci sono voci sul DB");
 		if (compagniaDAO.delete(elencoVociPresenti.get(elencoVociPresenti.size() - 1)) < 1) {
 			throw new RuntimeException("testDelete : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindByExampleCompagnia(CompagniaDAO compagniaDAO) throws Exception {
+		System.out.println("========== Avvio test example di compagnia ==========");
+		List<Compagnia> elencoVociPresenti = compagniaDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
+		Compagnia compagniaPerTestExample = new Compagnia("provami", 100L, new Date(2022, 01, 01));
+		int conteggioInserimenti = compagniaDAO.insert(compagniaPerTestExample);
+		if (conteggioInserimenti < 1) {
+			throw new RuntimeException("Inserimento non avvenuto");
+		}
+		Compagnia compagniaPerTest = new Compagnia("provami", 100L, new Date(2022, 01, 01));
+		if (compagniaDAO.findByExample(compagniaPerTest) == null) {
+			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
