@@ -53,6 +53,8 @@ public class TestGestioneCompagnia {
 
 			testDeleteImpiegato(impiegatoDAOInstance);
 
+			testFindByExampleImpiegato(impiegatoDAOInstance);
+
 		}
 
 	}
@@ -194,6 +196,25 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("testDelete : FAILED, non ci sono voci sul DB");
 		if (impiegatoDAO.delete(elencoVociPresenti.get(elencoVociPresenti.size() - 1)) < 1) {
 			throw new RuntimeException("testDelete : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindByExampleImpiegato(ImpiegatoDAO impiegatoDAO) throws Exception {
+		System.out.println("========== Avvio test example di impiegato ==========");
+		List<Impiegato> elencoVociPresenti = impiegatoDAO.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
+		Impiegato impiegatoPerTestExample = new Impiegato("test", "test", "h501x", new java.util.Date(2000, 01, 01),
+				new java.util.Date(2000, 01, 01));
+		int conteggioInserimenti = impiegatoDAO.insert(impiegatoPerTestExample);
+		if (conteggioInserimenti < 1) {
+			throw new RuntimeException("Inserimento non avvenuto");
+		}
+		Impiegato impiegatoPerTest = new Impiegato("test", "test", "h501x", new java.util.Date(2000, 01, 01),
+				new java.util.Date(2000, 01, 01));
+		if (impiegatoDAO.findByExample(impiegatoPerTest) == null) {
+			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
