@@ -189,7 +189,7 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 		Compagnia compagniaTemp = null;
 
 		try (PreparedStatement ps = connection.prepareStatement(
-				"select distinct * from compagnia inner join impiegato on compagnia_id = compagnia.id where dataAssunzione > ? ")) {
+				"select distinct compagnia_id from compagnia inner join impiegato on compagnia_id = compagnia.id where dataAssunzione > ? ")) {
 
 			ps.setDate(1, new java.sql.Date(dataInput.getTime()));
 
