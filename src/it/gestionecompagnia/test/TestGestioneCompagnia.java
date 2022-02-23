@@ -57,6 +57,10 @@ public class TestGestioneCompagnia {
 
 			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance);
 
+			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
+
+			testFindAllByCodicefiscaleContiene(compagniaDAOInstance);
+
 		}
 
 	}
@@ -229,6 +233,32 @@ public class TestGestioneCompagnia {
 		}
 		Date dataInput = new java.sql.Date(2000, 01, 01);
 		if (compagniaDAO.findAllByDataAssunzioneMaggioreDi(dataInput) == null) {
+			throw new RuntimeException("errore nel db");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindAllByRagioneSocialeContiene(CompagniaDAO compagniaDAO) throws Exception {
+		System.out.println("========== Avvio test find by ragione sociale di compagnia ==========");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAO.list();
+		if (elencoCompagniePresenti.size() < 1) {
+			throw new RuntimeException("lista di compagnie vuota");
+		}
+		String inputString = "pro";
+		if (compagniaDAO.findAllByRagioneSocialeContiene(inputString) == null) {
+			throw new RuntimeException("errore nel db");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindAllByCodicefiscaleContiene(CompagniaDAO compagniaDAO) throws Exception {
+		System.out.println("========== Avvio test find by codice fiscale di compagnia ==========");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAO.list();
+		if (elencoCompagniePresenti.size() < 1) {
+			throw new RuntimeException("lista di compagnie vuota");
+		}
+		String inputString = "h501";
+		if (compagniaDAO.findAllByCodFisContiene(inputString) == null) {
 			throw new RuntimeException("errore nel db");
 		}
 		System.out.println("========== test eseguito con successo ==========");

@@ -212,15 +212,64 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 	}
 
 	@Override
-	public List<Compagnia> findAllByRagioneSocialeContiene(String input) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Compagnia> findAllByRagioneSocialeContiene(String input) throws Exception {
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		ArrayList<Compagnia> result = new ArrayList<Compagnia>();
+		Compagnia compagniaTemp = null;
+
+		try (PreparedStatement ps = connection
+				.prepareStatement("select * from compagnia where ragioneSociale like ?")) {
+
+			ps.setString(1, "'%" + input + "%'");
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					compagniaTemp = new Compagnia();
+					compagniaTemp.setId(rs.getInt("id"));
+					compagniaTemp.setRagioneSociale(rs.getString("ragioneSociale"));
+					compagniaTemp.setFatturatoAnnuo(rs.getLong("fatturatoAnnuo"));
+					compagniaTemp.setDataFondazone(rs.getDate("dataFondazione"));
+					result.add(compagniaTemp);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+			return result;
+		}
 	}
 
 	@Override
-	public List<Impiegato> findAllByCodFisContiene(String input) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Compagnia> findAllByCodFisContiene(String input) throws Exception {
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+
+		ArrayList<Compagnia> result = new ArrayList<Compagnia>();
+		Compagnia compagniaTemp = null;
+
+		try (PreparedStatement ps = connection.prepareStatement("select * from compagnia inner join impiegato on compagnia_id= compagnia.id where codiceFiscale like ?")) {
+
+			ps.setString(1, "'%" + input + "%'");
+
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					compagniaTemp = new Compagnia();
+					compagniaTemp.setId(rs.getInt("id"));
+					compagniaTemp.setRagioneSociale(rs.getString("ragioneSociale"));
+					compagniaTemp.setFatturatoAnnuo(rs.getLong("fatturatoAnnuo"));
+					compagniaTemp.setDataFondazone(rs.getDate("dataFondazione"));
+					result.add(compagniaTemp);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw e;
+			}
+			return result;
+		}
 	}
 
 }
