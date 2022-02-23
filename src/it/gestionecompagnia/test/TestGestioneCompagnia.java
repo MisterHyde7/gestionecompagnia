@@ -65,6 +65,8 @@ public class TestGestioneCompagnia {
 
 			testCountByDataFondazioneGreaterThan(compagniaDAOInstance, impiegatoDAOInstance);
 
+			testFindAllByFatturatoMaggioreDi(compagniaDAOInstance, impiegatoDAOInstance);
+
 		}
 
 	}
@@ -291,6 +293,20 @@ public class TestGestioneCompagnia {
 		}
 		Date dataInput = new Date(1000, 01, 01);
 		if (impiegatoDAO.countByDataFondazioneCompagniaGreaterThan(dataInput) < 0) {
+			throw new RuntimeException("errore nel db");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindAllByFatturatoMaggioreDi(CompagniaDAO compagniaDAO, ImpiegatoDAO impiegatoDAO)
+			throws Exception {
+		System.out.println("========== Avvio test find by fatturato annuo maggiore di impiegato ==========");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAO.list();
+		if (elencoCompagniePresenti.size() < 1) {
+			throw new RuntimeException("lista di compagnie vuota");
+		}
+		Long fatturatoMinimo = 10L;
+		if (impiegatoDAO.findAllByCompagniaConFatturatoMaggioreDi(fatturatoMinimo) == null) {
 			throw new RuntimeException("errore nel db");
 		}
 		System.out.println("========== test eseguito con successo ==========");
