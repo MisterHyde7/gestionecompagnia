@@ -10,6 +10,7 @@ public class Impiegato {
 	protected String codiceFiscale;
 	protected Date dataDiNascita;
 	protected Date dataAssunzione;
+	protected int compagnia_id;
 
 	public Impiegato() {
 		super();
@@ -70,6 +71,14 @@ public class Impiegato {
 
 	public void setDataAssunzione(Date dataAssunzione) {
 		this.dataAssunzione = dataAssunzione;
+	}
+
+	public int getCompagnia_id() {
+		return compagnia_id;
+	}
+
+	public void setCompagnia_id(int compagnia_id) {
+		this.compagnia_id = compagnia_id;
 	}
 
 	@Override

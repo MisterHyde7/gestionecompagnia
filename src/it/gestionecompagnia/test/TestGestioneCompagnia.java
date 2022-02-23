@@ -61,6 +61,8 @@ public class TestGestioneCompagnia {
 
 			testFindAllByCodicefiscaleContiene(compagniaDAOInstance);
 
+			testAllFindByCompagnia(compagniaDAOInstance, impiegatoDAOInstance);
+
 		}
 
 	}
@@ -261,6 +263,20 @@ public class TestGestioneCompagnia {
 		if (compagniaDAO.findAllByCodFisContiene(inputString) == null) {
 			throw new RuntimeException("errore nel db");
 		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testAllFindByCompagnia(CompagniaDAO compagniaDAO, ImpiegatoDAO impiegatoDAO) throws Exception {
+		System.out.println("========== Avvio test find by compagnia di impiegato ==========");
+		List<Impiegato> elencoCompagniePresenti = impiegatoDAO.list();
+		if (elencoCompagniePresenti.size() < 1) {
+			throw new RuntimeException("lista di compagnie vuota");
+		}
+		Impiegato impiegatoTest = new Impiegato("test", "testCognome", "testh501test", new java.util.Date(2000, 01, 01),
+				new java.util.Date(2000, 01, 01));
+		Compagnia compagniaTest = new Compagnia("prova", 777L, new Date(1000, 01, 01));
+		compagniaDAO.insert(compagniaTest);
+		impiegatoTest.setCompagnia_id(117);
 		System.out.println("========== test eseguito con successo ==========");
 	}
 }
