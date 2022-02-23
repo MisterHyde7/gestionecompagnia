@@ -33,7 +33,7 @@ public class TestGestioneCompagnia {
 			testGetById(compagniaDAOInstance);
 
 			Compagnia compagniaPerTestUpdate = new Compagnia("com", 500L, new Date(2022, 01, 01));
-			compagniaPerTestUpdate.setId(1);
+			compagniaPerTestUpdate.setId(129);
 			testUpdateCompagnia(compagniaDAOInstance, compagniaPerTestUpdate);
 
 			testDeleteCompagnia(compagniaDAOInstance);
@@ -53,7 +53,9 @@ public class TestGestioneCompagnia {
 
 			testDeleteImpiegato(impiegatoDAOInstance);
 
-			testFindByExampleImpiegato(impiegatoDAOInstance);
+//			testFindByExampleImpiegato(impiegatoDAOInstance);
+
+			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance);
 
 		}
 
@@ -91,7 +93,7 @@ public class TestGestioneCompagnia {
 		List<Compagnia> elencoVociPresenti = compagniaDAOInstance.list();
 		if (elencoVociPresenti.size() < 1)
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
-		if (compagniaDAOInstance.get(1L) == null) {
+		if (compagniaDAOInstance.get(117L) == null) {
 			throw new RuntimeException("testList : FAILED, non ci sono voci sul DB");
 		}
 		System.out.println("========== test eseguito con successo ==========");
@@ -215,6 +217,19 @@ public class TestGestioneCompagnia {
 				new java.util.Date(2000, 01, 01));
 		if (impiegatoDAO.findByExample(impiegatoPerTest) == null) {
 			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindAllByDataAssunzioneMaggioreDi(CompagniaDAO compagniaDAO) throws Exception {
+		System.out.println("========== Avvio test find by assunzione di compagnia ==========");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAO.list();
+		if (elencoCompagniePresenti.size() < 1) {
+			throw new RuntimeException("lista di compagnie vuota");
+		}
+		Date dataInput = new java.sql.Date(2000, 01, 01);
+		if (compagniaDAO.findAllByDataAssunzioneMaggioreDi(dataInput) == null) {
+			throw new RuntimeException("errore nel db");
 		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
