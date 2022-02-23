@@ -10,7 +10,6 @@ import java.util.List;
 
 import it.gestionecompagnia.dao.AbstractMySQLDAO;
 import it.gestionecompagnia.model.Compagnia;
-import it.gestionecompagnia.model.Impiegato;
 
 public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 
