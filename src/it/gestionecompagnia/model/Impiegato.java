@@ -16,6 +16,21 @@ public class Impiegato {
 		super();
 	}
 
+	public Impiegato(String nome, String cognome, String codiceFiscale) {
+		super();
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+	}
+
+	public Impiegato(int id, String nome, String cognome, String codiceFiscale) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cognome = cognome;
+		this.codiceFiscale = codiceFiscale;
+	}
+
 	public Impiegato(String nome, String cognome, String codiceFiscale, Date dataDiNascita, Date dataAssunzione) {
 		super();
 		this.nome = nome;

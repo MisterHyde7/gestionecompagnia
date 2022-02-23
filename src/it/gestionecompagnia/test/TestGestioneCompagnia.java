@@ -53,7 +53,7 @@ public class TestGestioneCompagnia {
 
 			testDeleteImpiegato(impiegatoDAOInstance);
 
-//			testFindByExampleImpiegato(impiegatoDAOInstance);
+			testFindByExampleImpiegato(impiegatoDAOInstance);
 
 			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance);
 
@@ -225,8 +225,7 @@ public class TestGestioneCompagnia {
 		if (conteggioInserimenti < 1) {
 			throw new RuntimeException("Inserimento non avvenuto");
 		}
-		Impiegato impiegatoPerTest = new Impiegato("test", "test", "h501x", new java.util.Date(2000, 01, 01),
-				new java.util.Date(2000, 01, 01));
+		Impiegato impiegatoPerTest = new Impiegato("test", "test", "h501x");
 		if (impiegatoDAO.findByExample(impiegatoPerTest) == null) {
 			throw new RuntimeException("testExample : FAILED, non ci sono voci sul DB");
 		}
@@ -283,6 +282,9 @@ public class TestGestioneCompagnia {
 		Compagnia compagniaTest = new Compagnia("prova", 777L, new Date(1000, 01, 01));
 		compagniaDAO.insert(compagniaTest);
 		impiegatoTest.setCompagnia_id(117);
+		if (impiegatoDAO.findAllByCompagnia(compagniaTest) == null) {
+			throw new RuntimeException("errore nel db");
+		}
 		System.out.println("========== test eseguito con successo ==========");
 	}
 
