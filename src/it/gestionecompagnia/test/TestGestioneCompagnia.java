@@ -67,6 +67,8 @@ public class TestGestioneCompagnia {
 
 			testFindAllByFatturatoMaggioreDi(compagniaDAOInstance, impiegatoDAOInstance);
 
+			testFindAllByErroreAssunzione(compagniaDAOInstance, impiegatoDAOInstance);
+
 		}
 
 	}
@@ -307,6 +309,19 @@ public class TestGestioneCompagnia {
 		}
 		Long fatturatoMinimo = 10L;
 		if (impiegatoDAO.findAllByCompagniaConFatturatoMaggioreDi(fatturatoMinimo) == null) {
+			throw new RuntimeException("errore nel db");
+		}
+		System.out.println("========== test eseguito con successo ==========");
+	}
+
+	private static void testFindAllByErroreAssunzione(CompagniaDAO compagniaDAO, ImpiegatoDAO impiegatoDAO)
+			throws Exception {
+		System.out.println("========== Avvio test find by errore assunzione di impiegato ==========");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAO.list();
+		if (elencoCompagniePresenti.size() < 1) {
+			throw new RuntimeException("lista di compagnie vuota");
+		}
+		if (impiegatoDAO.findAllByErroreAssunzione() == null) {
 			throw new RuntimeException("errore nel db");
 		}
 		System.out.println("========== test eseguito con successo ==========");
